@@ -63,12 +63,12 @@ Every list screen has the D9 empty, filtered-empty, loading and error states unl
 
 | Portal | Host and prefix | Users | Shell (D9 9.17) | Home |
 |---|---|---|---|---|
-| Platform | `platform.darsgah.app/platform` | SA, platform support, platform billing | Platform bar, left navigation | `platform.home` |
-| Staff | `{slug}.darsgah.app/app` | All 20 staff role templates and custom roles | Navy sidebar, top bar with branch and session | `app.home` |
-| Guardian | `{slug}.darsgah.app/guardian` | Linked, portal-enabled guardians | Child switcher, bottom navigation | `guardian.home` |
-| Student | `{slug}.darsgah.app/student` | Students at or above the login threshold | Bottom navigation | `student.home` |
-| Public | `{slug}.darsgah.app/admissions`, `/verify` | Anyone | Public layout | none |
-| Sign-in | `{slug}.darsgah.app/login`, `platform.../login` | Everyone | Auth layout | none |
+| Platform | `platform.darsora.app/platform` | SA, platform support, platform billing | Platform bar, left navigation | `platform.home` |
+| Staff | `{slug}.darsora.app/app` | All 20 staff role templates and custom roles | Navy sidebar, top bar with branch and session | `app.home` |
+| Guardian | `{slug}.darsora.app/guardian` | Linked, portal-enabled guardians | Child switcher, bottom navigation | `guardian.home` |
+| Student | `{slug}.darsora.app/student` | Students at or above the login threshold | Bottom navigation | `student.home` |
+| Public | `{slug}.darsora.app/admissions`, `/verify` | Anyone | Public layout | none |
+| Sign-in | `{slug}.darsora.app/login`, `platform.../login` | Everyone | Auth layout | none |
 
 ---
 

@@ -33,7 +33,7 @@
 | ID | Decision |
 |---|---|
 | DEC-43 | Every reference from one tenant-owned table to another uses a **composite foreign key** `(organization_id, {parent}_id)` referencing the parent's unique key `(organization_id, id)`. The database itself rejects a row pointing to another tenant's record |
-| DEC-44 | Session and CSRF cookies are **host-only** (no `Domain=.platform-domain`). A session from `cityschool.darsgah.app` is never sent to `alnoor.darsgah.app` |
+| DEC-44 | Session and CSRF cookies are **host-only** (no `Domain=.platform-domain`). A session from `cityschool.darsora.app` is never sent to `alnoor.darsora.app` |
 | DEC-45 | Tenancy **fails closed**: querying a tenant-owned model without a tenant context throws `MissingTenantContext`. Platform code that needs cross-tenant access uses an explicit, audited `Tenancy::bypass()` block |
 | DEC-46 | Two global scopes: `OrganizationScope` (always on tenant models) and `AllowedBranchesScope` (on branch-owned models; limits rows to the union of branches the current user may access). Active-branch filtering and visibility levels are applied by Queries and policies on top |
 | DEC-47 | One user may hold staff role assignments and guardian links in the same organization (a teacher whose child studies there). A portal switcher moves between `app` and `guardian`. Student accounts are always separate users |
@@ -140,13 +140,13 @@ $table->foreign(['organization_id', 'section_id'])
 
 | Host | Purpose | Tenant resolved by |
 |---|---|---|
-| `{slug}.darsgah.app` | Tenant portals (`/app`, `/guardian`, `/student`, `/admissions`) | `organization_domains.domain` |
+| `{slug}.darsora.app` | Tenant portals (`/app`, `/guardian`, `/student`, `/admissions`) | `organization_domains.domain` |
 | Custom domain, e.g. `portal.cityschool.edu.pk` (R2) | Same as above | `organization_domains.domain` after DNS TXT verification |
-| `platform.darsgah.app` | Super admin portal | No tenant; platform users only |
-| `adms.darsgah.app` | ZKTeco ADMS (`/iclock/*`) | Device serial (DEC-29) |
-| `hooks.darsgah.app` | Gateway and provider webhooks `/webhooks/{provider}/{organization_uuid}` | UUID in path, then signature verified with that organization's credentials |
-| `api.darsgah.app` (R2) | API v1 | Token owner's organization |
-| `darsgah.app` | Marketing and "find your school" page | None; user types the school code, the page never lists schools |
+| `platform.darsora.app` | Super admin portal | No tenant; platform users only |
+| `adms.darsora.app` | ZKTeco ADMS (`/iclock/*`) | Device serial (DEC-29) |
+| `hooks.darsora.app` | Gateway and provider webhooks `/webhooks/{provider}/{organization_uuid}` | UUID in path, then signature verified with that organization's credentials |
+| `api.darsora.app` (R2) | API v1 | Token owner's organization |
+| `darsora.app` | Marketing and "find your school" page | None; user types the school code, the page never lists schools |
 
 **`organization_domains` columns:** `organization_id`, `domain` (unique, lowercase), `type` (`platform_subdomain`, `custom`), `is_primary`, `verification_token`, `verified_at`, `tls_status`, timestamps.
 

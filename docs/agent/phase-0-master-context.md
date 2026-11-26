@@ -1,12 +1,12 @@
 PHASE 0 MASTER CONTEXT PROMPT
-Darsgah: School and College ERP and LMS for Pakistan (Punjab first)
+Darsora: School and College ERP and LMS for Pakistan (Punjab first)
 
-You are the implementation agent for Darsgah. You write production code, tests and documentation in this repository. You work one step at a time. Each step prompt tells you exactly what to build. This master context gives the rules that apply to every step. Follow both. When the step prompt cites the blueprint (for example "D07 Part 1, 7.8"), open the file in docs/blueprint/ and follow that section exactly. If the step prompt and the blueprint disagree, the step prompt wins and you record the conflict in your report.
+You are the implementation agent for Darsora. You write production code, tests and documentation in this repository. You work one step at a time. Each step prompt tells you exactly what to build. This master context gives the rules that apply to every step. Follow both. When the step prompt cites the blueprint (for example "D07 Part 1, 7.8"), open the file in docs/blueprint/ and follow that section exactly. If the step prompt and the blueprint disagree, the step prompt wins and you record the conflict in your report.
 
 =====================================================================
 1. PRODUCT IN ONE PARAGRAPH
 =====================================================================
-Multi-tenant SaaS for private schools, school chains and intermediate colleges in Pakistan, including Cambridge O and A Level schools. One Laravel modular monolith, one MySQL database, row-level tenancy. Tenant = organization. Hierarchy: platform > organization > institution > branch; academic session belongs to an institution; fiscal year belongs to the organization. Four portals in one design system: platform (super admin, platform host), app (all staff including teachers), guardian, student (tenant hosts). English and Urdu (RTL) from day one. Money is exact. History is never destroyed. The product name "Darsgah" and domain darsgah.app are placeholders read only from config/darsgah.php.
+Multi-tenant SaaS for private schools, school chains and intermediate colleges in Pakistan, including Cambridge O and A Level schools. One Laravel modular monolith, one MySQL database, row-level tenancy. Tenant = organization. Hierarchy: platform > organization > institution > branch; academic session belongs to an institution; fiscal year belongs to the organization. Four portals in one design system: platform (super admin, platform host), app (all staff including teachers), guardian, student (tenant hosts). English and Urdu (RTL) from day one. Money is exact. History is never destroyed. The product name "Darsora" and domain darsora.app are placeholders read only from config/darsora.php.
 
 =====================================================================
 2. STACK AND VERSIONS
@@ -262,7 +262,7 @@ Views {module}::{portal}.{resource-kebab}.{view}. PDFs {module}::pdf.{document}.
 =====================================================================
 18. ENVIRONMENTS
 =====================================================================
-Local *.darsgah.test via deploy/docker/compose.yaml (app, nginx, mysql, redis-cache, redis-queue, gotenberg, mailpit, optional clamav). Staging *.staging.darsgah.app. Demo *.demo.darsgah.app (from PH-18). Production *.darsgah.app. Hosts per environment: platform., adms., hooks., api. DemoSeeder refuses to run in production.
+Local *.darsora.test via deploy/docker/compose.yaml (app, nginx, mysql, redis-cache, redis-queue, gotenberg, mailpit, optional clamav). Staging *.staging.darsora.app. Demo *.demo.darsora.app (from PH-18). Production *.darsora.app. Hosts per environment: platform., adms., hooks., api. DemoSeeder refuses to run in production.
 
 =====================================================================
 19. DEFINITION OF DONE (every step)

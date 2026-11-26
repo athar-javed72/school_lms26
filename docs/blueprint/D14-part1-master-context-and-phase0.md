@@ -50,7 +50,7 @@
 
 | Step | Do this |
 |---|---|
-| 1 | Create an empty Git repository named `darsgah` on GitHub with `main` protected (CI required). |
+| 1 | Create an empty Git repository named `darsora` on GitHub with `main` protected (CI required). |
 | 2 | Add the blueprint files from the LMS project to `docs/blueprint/` and commit them. |
 | 3 | Save the Master Context Prompt (14.3) as `docs/agent/phase-0-master-context.md` and commit it. |
 | 4 | For each step in order, open a new Antigravity conversation. Paste the Master Context Prompt first, then the step prompt. |
@@ -68,14 +68,14 @@ Paste this block, unchanged, as the first message of every Antigravity conversat
 
 ```text
 PHASE 0 MASTER CONTEXT PROMPT
-Darsgah: School and College ERP and LMS for Pakistan (Punjab first)
+Darsora: School and College ERP and LMS for Pakistan (Punjab first)
 
-You are the implementation agent for Darsgah. You write production code, tests and documentation in this repository. You work one step at a time. Each step prompt tells you exactly what to build. This master context gives the rules that apply to every step. Follow both. When the step prompt cites the blueprint (for example "D07 Part 1, 7.8"), open the file in docs/blueprint/ and follow that section exactly. If the step prompt and the blueprint disagree, the step prompt wins and you record the conflict in your report.
+You are the implementation agent for Darsora. You write production code, tests and documentation in this repository. You work one step at a time. Each step prompt tells you exactly what to build. This master context gives the rules that apply to every step. Follow both. When the step prompt cites the blueprint (for example "D07 Part 1, 7.8"), open the file in docs/blueprint/ and follow that section exactly. If the step prompt and the blueprint disagree, the step prompt wins and you record the conflict in your report.
 
 =====================================================================
 1. PRODUCT IN ONE PARAGRAPH
 =====================================================================
-Multi-tenant SaaS for private schools, school chains and intermediate colleges in Pakistan, including Cambridge O and A Level schools. One Laravel modular monolith, one MySQL database, row-level tenancy. Tenant = organization. Hierarchy: platform > organization > institution > branch; academic session belongs to an institution; fiscal year belongs to the organization. Four portals in one design system: platform (super admin, platform host), app (all staff including teachers), guardian, student (tenant hosts). English and Urdu (RTL) from day one. Money is exact. History is never destroyed. The product name "Darsgah" and domain darsgah.app are placeholders read only from config/darsgah.php.
+Multi-tenant SaaS for private schools, school chains and intermediate colleges in Pakistan, including Cambridge O and A Level schools. One Laravel modular monolith, one MySQL database, row-level tenancy. Tenant = organization. Hierarchy: platform > organization > institution > branch; academic session belongs to an institution; fiscal year belongs to the organization. Four portals in one design system: platform (super admin, platform host), app (all staff including teachers), guardian, student (tenant hosts). English and Urdu (RTL) from day one. Money is exact. History is never destroyed. The product name "Darsora" and domain darsora.app are placeholders read only from config/darsora.php.
 
 =====================================================================
 2. STACK AND VERSIONS
@@ -331,7 +331,7 @@ Views {module}::{portal}.{resource-kebab}.{view}. PDFs {module}::pdf.{document}.
 =====================================================================
 18. ENVIRONMENTS
 =====================================================================
-Local *.darsgah.test via deploy/docker/compose.yaml (app, nginx, mysql, redis-cache, redis-queue, gotenberg, mailpit, optional clamav). Staging *.staging.darsgah.app. Demo *.demo.darsgah.app (from PH-18). Production *.darsgah.app. Hosts per environment: platform., adms., hooks., api. DemoSeeder refuses to run in production.
+Local *.darsora.test via deploy/docker/compose.yaml (app, nginx, mysql, redis-cache, redis-queue, gotenberg, mailpit, optional clamav). Staging *.staging.darsora.app. Demo *.demo.darsora.app (from PH-18). Production *.darsora.app. Hosts per environment: platform., adms., hooks., api. DemoSeeder refuses to run in production.
 
 =====================================================================
 19. DEFINITION OF DONE (every step)
@@ -393,15 +393,15 @@ Nothing except the documentation folders.
 
 TASKS
 1. Create the Laravel 12 project in the repository root (composer create-project laravel/laravel:^12.0, keeping the existing docs/ folder). Lock laravel/framework to the latest 12.x release (12.71.0 or newer).
-2. Shape composer.json as D08 8.2: name darsgah/app, "php": "^8.2", "laravel/framework": "^12.0", PSR-4 roots App\ => app/, Modules\ => modules/, Database\Seeders\ => database/seeders/, Tests\ => tests/ (dev), scripts lint, analyse, test, test:arch, check; config platform-check true, sort-packages true.
+2. Shape composer.json as D08 8.2: name darsora/app, "php": "^8.2", "laravel/framework": "^12.0", PSR-4 roots App\ => app/, Modules\ => modules/, Database\Seeders\ => database/seeders/, Tests\ => tests/ (dev), scripts lint, analyse, test, test:arch, check; config platform-check true, sort-packages true.
 3. Remove the skeleton's users table migration, app/Models/User.php and its factory. Keep only the framework migrations for cache, cache_locks, jobs, job_batches and failed_jobs in database/migrations. (users, sessions and password reset tokens belong to Identity in P01.3.)
 4. Install dev tools: pestphp/pest ^3, pestphp/pest-plugin-laravel ^3, pestphp/pest-plugin-arch ^3, larastan/larastan ^3, laravel/pint, laravel/pail. Convert the skeleton tests to Pest. Create tests/Pest.php and tests/TestCase.php using RefreshDatabase on MySQL, and the empty folders tests/Support, tests/Architecture, tests/Feature, tests/Unit, tests/Contract.
-5. Add phpstan.neon (Larastan, level 6, phpVersion 80200, paths app, modules, config, database, routes), phpunit.xml (MySQL test database darsgah_test, failOnDeprecation, failOnWarning, failOnRisky), pint.json (Laravel preset plus declare_strict_types), .editorconfig, .gitattributes.
-6. Create deploy/docker/compose.yaml with services: app (PHP-FPM 8.4 from deploy/docker/php/Dockerfile with extensions pdo_mysql, redis, intl, gd, bcmath, zip, pcntl, opcache, exif), nginx (deploy/docker/nginx/default.conf serving *.darsgah.test, platform.darsgah.test, hooks.darsgah.test, api.darsgah.test; adms.conf serving HTTP for adms.darsgah.test /iclock/* only), mysql 8.4 (databases darsgah and darsgah_test, utf8mb4_0900_ai_ci), redis-cache (redis 7, no persistence, maxmemory-policy allkeys-lru), redis-queue (redis 7, appendonly yes, appendfsync everysec, maxmemory-policy noeviction), gotenberg (gotenberg/gotenberg:8 for now; P00.4 replaces it with a font image), mailpit, clamav (profile "scan", optional). Limit app and gotenberg to 4 CPUs and 8 GB so local timings resemble the S1 size (D12 12.21).
+5. Add phpstan.neon (Larastan, level 6, phpVersion 80200, paths app, modules, config, database, routes), phpunit.xml (MySQL test database darsora_test, failOnDeprecation, failOnWarning, failOnRisky), pint.json (Laravel preset plus declare_strict_types), .editorconfig, .gitattributes.
+6. Create deploy/docker/compose.yaml with services: app (PHP-FPM 8.4 from deploy/docker/php/Dockerfile with extensions pdo_mysql, redis, intl, gd, bcmath, zip, pcntl, opcache, exif), nginx (deploy/docker/nginx/default.conf serving *.darsora.test, platform.darsora.test, hooks.darsora.test, api.darsora.test; adms.conf serving HTTP for adms.darsora.test /iclock/* only), mysql 8.4 (databases darsora and darsora_test, utf8mb4_0900_ai_ci), redis-cache (redis 7, no persistence, maxmemory-policy allkeys-lru), redis-queue (redis 7, appendonly yes, appendfsync everysec, maxmemory-policy noeviction), gotenberg (gotenberg/gotenberg:8 for now; P00.4 replaces it with a font image), mailpit, clamav (profile "scan", optional). Limit app and gotenberg to 4 CPUs and 8 GB so local timings resemble the S1 size (D12 12.21).
 7. Add deploy/docker/php/Dockerfile.ci for PHP 8.2 with the same extensions (used by the CI matrix).
 8. Write .env.example exactly as D08 8.7 plus REDIS_CACHE_HOST=redis-cache, REDIS_QUEUE_HOST=redis-queue, SECURITY_INTERNAL_CIDRS=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16. Local .env uses SESSION_DRIVER=file until P01.3 creates the sessions table; .env.example keeps database.
 9. Configure config/database.php: MySQL charset utf8mb4, collation utf8mb4_0900_ai_ci, strict true, timezone +00:00; Redis connections default, queue, locks on REDIS_QUEUE_HOST and cache on REDIS_CACHE_HOST. config/app.php timezone UTC.
-10. Create config/darsgah.php: root_domain, hosts (platform, adms, hooks, api), reserved_slugs (D04 4.7 list), product_name, support_email; all from env with safe defaults.
+10. Create config/darsora.php: root_domain, hosts (platform, adms, hooks, api), reserved_slugs (D04 4.7 list), product_name, support_email; all from env with safe defaults.
 11. Create the documentation folders: docs/decisions/decisions.md (table header: ID | Decision | Deliverable | First applied in step), docs/runbooks/, docs/agent/phases/, docs/agent/reports/, docs/agent/checklists/. Add README.md with local setup (hosts file entries, docker compose up, composer install, npm install, php artisan key:generate, migrate, test).
 12. Create .github/workflows/ci.yml with two stages from D12 12.27:
     push: composer validate; pint --test; larastan; pest --group=arch; pest tests/Unit; gitleaks; composer audit; npm ci; npm audit --audit-level=high; npm run build.
@@ -674,7 +674,7 @@ TASKS
 6. Install laravel/horizon ^5 (package check). config/horizon.php with one supervisor per queue from D03 3.11 (workers, timeout, tries, backoff). Horizon dashboard gate: platform super admin only; until platform users exist (P01.5), deny in every non-local environment. config/queue.php Redis on the queue connection with after_commit true.
 7. Optional Sentry: install sentry/sentry-laravel only if the package check passes; DSN from env; send_default_pii false; before_send scrubs with the same redaction rules; traces_sample_rate 0.1.
 8. Production image: deploy/docker/php/Dockerfile multi-stage: composer install --no-dev --optimize-autoloader in a builder; npm ci && npm run build in a node builder; final PHP-FPM 8.4 image with OPcache (validate_timestamps=0, memory 256M, JIT off), realpath cache 4096K, non-root user, no dev tools. Entrypoints by role: web (php-fpm with nginx sidecar), worker (php artisan horizon), scheduler (php artisan schedule:work). Startup runs php artisan optimize for the web and worker roles.
-9. Staging stack: deploy/staging/compose.yaml (caddy, nginx, app web, worker, scheduler, mysql 8.4, redis-cache, redis-queue, gotenberg font image) and deploy/caddy/Caddyfile.staging serving *.staging.darsgah.app, platform.staging.darsgah.app, hooks., api. with TLS via DNS challenge (token from the server secret store; never in the repo), and adms.staging.darsgah.app with HTTP allowed only for /iclock/*. deploy/scripts/deploy.sh implementing D12 12.29 steps 1 to 6 for staging (pre-flight checks, migrate with the migration DB user, roll web, horizon:terminate, replace scheduler, smoke tests). deploy/scripts/smoke.sh: /up 200, internal.health.ready 200 from inside the network, a queue round trip, one Gotenberg render.
+9. Staging stack: deploy/staging/compose.yaml (caddy, nginx, app web, worker, scheduler, mysql 8.4, redis-cache, redis-queue, gotenberg font image) and deploy/caddy/Caddyfile.staging serving *.staging.darsora.app, platform.staging.darsora.app, hooks., api. with TLS via DNS challenge (token from the server secret store; never in the repo), and adms.staging.darsora.app with HTTP allowed only for /iclock/*. deploy/scripts/deploy.sh implementing D12 12.29 steps 1 to 6 for staging (pre-flight checks, migrate with the migration DB user, roll web, horizon:terminate, replace scheduler, smoke tests). deploy/scripts/smoke.sh: /up 200, internal.health.ready 200 from inside the network, a queue round trip, one Gotenberg render.
 10. Database users on staging per DEC-190: app user (DML only; INSERT and SELECT only on audit_logs and login_events once they exist), migration user (DDL), read-only user (replica later). Provide deploy/mysql/grants.sql parameterised by environment variables; passwords come from the secret store.
 11. CI: add the merge-to-main stage (build image tagged with the commit SHA, scan with Trivy and fail on fixable critical or high, sign with cosign keyless, push to the registry, deploy to staging over SSH using secrets STAGING_HOST, STAGING_SSH_KEY, REGISTRY_TOKEN, run smoke.sh, then run an OWASP ZAP baseline scan against the staging root and fail on high findings) and the nightly stage (pest --group=gotenberg against a Gotenberg service container). If any secret is missing, the job must fail with a clear message; do not invent values.
 12. Repeat the P00.4 spike timings on staging with document:spike-render --type=challan --count=1000 --concurrency=4 and append the results to docs/decisions/spike-urdu-pdf.md.
@@ -706,7 +706,7 @@ TESTS
 
 ACCEPTANCE CRITERIA
 1. Merge to main builds, scans, signs and deploys to staging automatically; smoke.sh passes; ZAP baseline shows no high findings.
-2. https://{any}.staging.darsgah.app/up returns 200 over TLS 1.2 or 1.3; security headers present (verified with curl -I output in the report).
+2. https://{any}.staging.darsora.app/up returns 200 over TLS 1.2 or 1.3; security headers present (verified with curl -I output in the report).
 3. internal.health.ready on staging returns 200 with php_version 8.4.x (RT-1 evidence).
 4. Staging spike timings recorded; 1,000 challans merged under 5 minutes, or a FAIL recorded.
 5. Nightly job runs the gotenberg group successfully.

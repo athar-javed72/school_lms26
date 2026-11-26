@@ -17,7 +17,7 @@
 | DEC-202 | **Performance budgets (12.17) are release gates.** They are measured by the staging load test before each release and by production p95 every week. |
 | DEC-203 | **Replica reads:** only reports, exports, snapshot computation and scheduled report jobs read from the replica (`mysql_replica` connection). Every user-facing transactional screen reads the primary. If replica lag is over 30 seconds, report jobs wait and report screens show the "as of" time from the replica. |
 | DEC-204 | **Two Redis roles:** `redis-cache` (eviction `allkeys-lru`, no persistence) for cache, and `redis-queue` (eviction `noeviction`, AOF every second) for queues, locks and rate limiters. A full cache can never evict a queued job. |
-| DEC-205 | **Edge and TLS:** Caddy at the edge. Platform hosts use a wildcard certificate for `*.darsgah.app`, issued through a DNS challenge. Custom domains use on-demand TLS. Before issuing, Caddy calls the internal endpoint `internal.domains.check`, which returns 200 only for a verified `organization_domains` row. |
+| DEC-205 | **Edge and TLS:** Caddy at the edge. Platform hosts use a wildcard certificate for `*.darsora.app`, issued through a DNS challenge. Custom domains use on-demand TLS. Before issuing, Caddy calls the internal endpoint `internal.domains.check`, which returns 200 only for a verified `organization_domains` row. |
 | DEC-206 | **One container image** per commit serves the web, worker and scheduler roles with different start commands. The image is built once, scanned, signed and promoted unchanged. |
 | DEC-207 | **Zero-downtime deploys with expand-and-contract migrations.** A release only adds schema. Removals ship in a later release, after no running code uses the old schema. Production never runs `down` migrations; rollback means redeploying the previous image. |
 | DEC-208 | **Backups:** binary logs stream continuously to object storage, and a full physical backup runs every night. Every backup is encrypted, with an immutable off-site copy under a 35-day object lock. The RPO target is 15 minutes against a commitment of 1 hour (D1). RTO is 4 hours for component loss and data corruption, and 24 hours for loss of the whole region (accepted in Part 1 12.15). |
@@ -36,7 +36,7 @@
 | D8 8.14 | Adds `tests/Load/` (k6 scripts, DEC-211) and `tests/Feature/Ops/` (health, backup and scheduler checks). |
 | D8 8.2 and D3 3.21 | `composer.json` keeps `"php": "^8.2"` until UG-1, then `"php": "^8.4"` (DEC-199). After UG-1, the package rule DEC-01 reads "supports PHP 8.4 and 8.5 and Laravel 13 and 14". |
 | D8 8.17 step 3 | The command is `identity:sync-permissions` (as already corrected in D10 10.1). |
-| D4 hosts | Adds `status.darsgah.app`, an externally hosted status page that stays up during a platform outage. No tenant data. |
+| D4 hosts | Adds `status.darsora.app`, an externally hosted status page that stays up during a platform outage. No tenant data. |
 | D3 3.11 | Queue workers come from DEC-204 `redis-queue`. Wait-time targets and alerts are in 12.17 and 12.33. |
 
 ---
@@ -291,11 +291,11 @@ k6 scripts in `tests/Load/` run against staging, seeded by `core:anonymize-copy`
 
 | Environment | Purpose | Hosts | Data | Integrations |
 |---|---|---|---|---|
-| Local | Development | `*.darsgah.test` (Docker Compose, A-71) | `DemoSeeder` | Fakes; Mailpit for email; local Gotenberg |
+| Local | Development | `*.darsora.test` (Docker Compose, A-71) | `DemoSeeder` | Fakes; Mailpit for email; local Gotenberg |
 | CI | Automated tests | n/a | Factories | Fakes; real Gotenberg in the nightly group |
-| Staging | Release verification, load tests | `*.staging.darsgah.app` | `DemoSeeder`, `LoadTestSeeder`, or an anonymized copy (DEC-214) | Provider sandboxes (payment test merchants, SMS test sender) |
-| Demo | Sales sandbox | `*.demo.darsgah.app` | `DemoSeeder`, reset every night | Fakes; messages shown in an in-app outbox only |
-| Production | Live | `*.darsgah.app` and verified custom domains | Real | Live providers with each organization's credentials |
+| Staging | Release verification, load tests | `*.staging.darsora.app` | `DemoSeeder`, `LoadTestSeeder`, or an anonymized copy (DEC-214) | Provider sandboxes (payment test merchants, SMS test sender) |
+| Demo | Sales sandbox | `*.demo.darsora.app` | `DemoSeeder`, reset every night | Fakes; messages shown in an in-app outbox only |
+| Production | Live | `*.darsora.app` and verified custom domains | Real | Live providers with each organization's credentials |
 
 Rules: each environment has its own `APP_KEY`, pepper, database, Redis, storage bucket and provider credentials. Staging and demo send no SMS or email to real numbers outside an allowlist. Access to production servers is limited to named platform engineers through SSO and a bastion, with session recording.
 
@@ -346,7 +346,7 @@ Release (manual approval by the release owner)
 ```
                          Internet
                             |
-              DNS (*.darsgah.app, custom domains CNAME to edge)
+              DNS (*.darsora.app, custom domains CNAME to edge)
                             |
         +-------------------+--------------------+
         |  Edge: 2 x Caddy (DEC-205), floating IP or cloud load balancer
@@ -371,9 +371,9 @@ Release (manual approval by the release owner)
         Object storage (S3-compatible, private buckets, versioning)
         Off-site backup bucket (second location, object lock 35 days)
 
- Separate: ADMS host adms.darsgah.app (HTTP allowed on /iclock/*, Part 1 12.8)
-           hooks.darsgah.app (webhooks), api.darsgah.app (API v1), platform.darsgah.app
-           status.darsgah.app (external status page)
+ Separate: ADMS host adms.darsora.app (HTTP allowed on /iclock/*, Part 1 12.8)
+           hooks.darsora.app (webhooks), api.darsora.app (API v1), platform.darsora.app
+           status.darsora.app (external status page)
  Observability: logs, metrics, traces and alerts (12.33)
 ```
 
@@ -381,11 +381,11 @@ Release (manual approval by the release owner)
 
 | Host | Served by | Middleware group (D8) |
 |---|---|---|
-| `{slug}.darsgah.app`, verified custom domains | App nodes | `tenant.web`, `tenant.guest`, `tenant.public`, `portal.*` |
-| `platform.darsgah.app` | App nodes | `portal.platform` (IP allowlist optional) |
-| `hooks.darsgah.app` | App nodes, separate FPM pool | `webhook` |
-| `adms.darsgah.app` | App nodes, separate FPM pool | `adms` |
-| `api.darsgah.app` | App nodes | `api.v1` |
+| `{slug}.darsora.app`, verified custom domains | App nodes | `tenant.web`, `tenant.guest`, `tenant.public`, `portal.*` |
+| `platform.darsora.app` | App nodes | `portal.platform` (IP allowlist optional) |
+| `hooks.darsora.app` | App nodes, separate FPM pool | `webhook` |
+| `adms.darsora.app` | App nodes, separate FPM pool | `adms` |
+| `api.darsora.app` | App nodes | `api.v1` |
 
 Webhooks and ADMS get their own FPM pools so a device flood can't starve the web pool.
 
@@ -604,7 +604,7 @@ Stored in `docs/runbooks/` (D8 8.13). Each runbook has: when to use it, who may 
 | GAP-263 | Losing Redis would lose queued work | `core:requeue-stuck`, records first in MySQL (12.30) |
 | GAP-264 | Deploys could clash with school hours and peak days | DEC-212, freeze calendar (12.32) |
 | GAP-265 | Live PDF rendering would collapse on result day | Pre-rendered PDFs (DEC-215) |
-| GAP-266 | No status page during platform outages | `status.darsgah.app` (correction to D4) |
+| GAP-266 | No status page during platform outages | `status.darsora.app` (correction to D4) |
 
 ---
 

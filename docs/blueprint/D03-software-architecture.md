@@ -171,7 +171,7 @@ Tests live in the root: `tests/Feature/Fee`, `tests/Unit/Fee`, `tests/Architectu
 ## 3.7 Request Lifecycle
 
 ```
-Browser: GET https://cityschool.darsgah.app/app/fee/vouchers?class=9
+Browser: GET https://cityschool.darsora.app/app/fee/vouchers?class=9
    |
    v
 [1] AssignCorrelationId      -> X-Correlation-Id, added to log context

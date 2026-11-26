@@ -317,7 +317,7 @@ ALREADY BUILT
 R1, R2 and PH-19 to PH-20 on Laravel 14 and PHP 8.4, MySQL 9.7.
 
 TASKS
-1. Check the rule: at least two Laravel 15 point releases, and every composer dependency (including the Laravel Zero version used by darsgah-sync-agent) supports Laravel 15 and PHP 8.4 and 8.5. If not met, write docs/decisions/ug-5-deferred.md with each blocker and stop.
+1. Check the rule: at least two Laravel 15 point releases, and every composer dependency (including the Laravel Zero version used by darsora-sync-agent) supports Laravel 15 and PHP 8.4 and 8.5. If not met, write docs/decisions/ug-5-deferred.md with each blocker and stop.
 2. Apply the upgrade guide checklist; keep the forbidden-feature rules (property hooks and asymmetric visibility stay banned on Eloquent models, DEC-199); no new Larastan ignores; full suite, nightly, mutation, browser, load and isolation runs.
 3. Staging deploy with the full load set; production deploy in the window with a 30-minute watch.
 4. Update the upgrade runbook and decisions.md.
@@ -796,7 +796,7 @@ CI has tested PHP 8.4 and 8.5 since UG-1; production runs PHP 8.4.
 
 TASKS
 1. Review deprecations and backward-incompatible changes in the 8.5 migration guide against the codebase and both repositories; fix deprecation notices (the test suite fails on deprecations).
-2. Build runtime images on PHP 8.5 (FPM, Horizon workers, scheduler); rebuild darsgah-sync-agent binaries with static-php-cli on 8.5 and publish signed releases.
+2. Build runtime images on PHP 8.5 (FPM, Horizon workers, scheduler); rebuild darsora-sync-agent binaries with static-php-cli on 8.5 and publish signed releases.
 3. composer.json "php": "^8.5"; CI matrix becomes PHP 8.5 and the next supported version if released; Larastan phpVersion 80500.
 4. Staging with full load set; production deploy in the window with a 30-minute watch; sync agent self-update verified on a test site.
 5. Update runbooks and decisions.md; MS-16 evidence.

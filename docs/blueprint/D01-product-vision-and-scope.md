@@ -37,7 +37,7 @@ Every later deliverable assumes DEC-01.
 
 | Item | Decision |
 |---|---|
-| Working name | **Darsgah** (Urdu for "place of learning"). Placeholder only, replace before launch after a trademark check. |
+| Working name | **Darsora**. Chosen on 26 Nov 2026 in place of the earlier placeholder. Confirm the trademark (IPO Pakistan), the SECP company name and the darsora.app domain before launch. |
 | Code identity | The product name never appears in code. Namespaces are `App\` and `Modules\{ModuleName}\`, so a rename costs nothing. |
 | Product type | Multi-tenant SaaS, Laravel modular monolith, server-rendered web app, mobile-responsive, English and Urdu. |
 | White-labeling | Each organization sets logo, document headers, signatures, brand accent color (within accessible contrast limits) and subdomain. |
@@ -104,7 +104,7 @@ All four scenarios run on one data model. Scenario A is simply an organization w
 
 ```
                           +-----------------------------------+
-                          |        PLATFORM (Darsgah)         |
+                          |        PLATFORM (Darsora)         |
                           |  Super Admin, Plans, Entitlements |
                           +-----------------+-----------------+
                                             |

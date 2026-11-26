@@ -15,7 +15,7 @@
 | DEC-130 | **Blade components.** Shared primitives live in the root `resources/views/components/ui/` and render as `x-ui.button`. Module composites live in `modules/{Name}/resources/views/components/{module-kebab}/`; the module registers that folder as an anonymous component path without a prefix, so tags render as `x-fee.voucher-card`, matching D1. An arch test checks that each module only puts components under its own subfolder. |
 | DEC-131 | **Module views are grouped by portal:** `{module}::{portal}.{resource}.{view}`, for example `fee::app.vouchers.index` and `fee::guardian.vouchers.show`. PDF templates use `{module}::pdf.{document}`. |
 | DEC-132 | **One base provider.** Every module provider extends `Modules\Core\Support\ModuleServiceProvider`. It loads migrations, views, translations, components and route files, registers listeners explicitly, adds morph aliases, and registers commands and registry contributions. Laravel's automatic event discovery is turned off. Policy and factory names are resolved by convention callbacks set once in Core. |
-| DEC-133 | **API host and auth.** API v1 (R2) is served on `api.darsgah.app` under the path `/api/v1`, authenticated with Sanctum tokens. Each token belongs to one organization, carries one portal ability (`portal:app`, `portal:guardian`, `portal:student`) or a device ability (`device:punch`), and expires after 90 days unless rotated. Permissions are still enforced by the same policies as the web. |
+| DEC-133 | **API host and auth.** API v1 (R2) is served on `api.darsora.app` under the path `/api/v1`, authenticated with Sanctum tokens. Each token belongs to one organization, carries one portal ability (`portal:app`, `portal:guardian`, `portal:student`) or a device ability (`device:punch`), and expires after 90 days unless rotated. Permissions are still enforced by the same policies as the web. |
 | DEC-134 | **API value formats.** IDs are ULIDs. Money is `{ "amount": "8500.00", "currency": "PKR" }` with the amount as a decimal string. Instants are ISO 8601 in UTC (`2026-11-05T06:12:44Z`). School-day dates are `YYYY-MM-DD`. Enums are `{ "value": "paid", "label": "Paid" }`, with the label in the request language. |
 | DEC-135 | **API contract.** The OpenAPI 3.1 specification is kept by hand in `docs/api/`. A contract test fails if any `api.v1.*` route is missing from the spec or the spec lists a path that has no route. |
 | DEC-136 | **Optimistic locking (FR-GEN-010).** Web edit forms carry the record's `updated_at` as a hidden `_version`; a mismatch returns a conflict page (409). API `GET` on a single record returns an `ETag`; `PUT` and `PATCH` require `If-Match` (428 if missing, 412 if stale). |
@@ -36,7 +36,7 @@
 One repository, one deployable application.
 
 ```
-darsgah/
+darsora/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                 PHP 8.2 and 8.4 matrix: pint, larastan, pest (unit, feature, arch, contract), migrations fresh and upgrade, npm build, composer audit
@@ -96,7 +96,7 @@ darsgah/
 
 ```json
 {
-    "name": "darsgah/app",
+    "name": "darsora/app",
     "type": "project",
     "require": {
         "php": "^8.2",
@@ -635,11 +635,11 @@ Route::portalResource('cashier-sessions', App\CashierSessionController::class)
 
 | File | Contents |
 |---|---|
-| `app.php` | Name `Darsgah`, timezone `UTC` (display timezone comes from organization settings), locale `en`, fallback `en` |
+| `app.php` | Name `Darsora`, timezone `UTC` (display timezone comes from organization settings), locale `en`, fallback `en` |
 | `auth.php` | Guard `web` (session), provider `users`; password broker replaced by Identity's organization-aware broker (DEC-96) |
 | `cache.php` | Redis in staging and production; key prefix per environment |
 | `cors.php` | Paths `api/*` only; no allowed browser origins (API clients are apps, not browsers) |
-| `darsgah.php` | Root domain, hosts (`platform`, `adms`, `hooks`, `api`), reserved slugs (D4 4.7), product name, support email |
+| `darsora.php` | Root domain, hosts (`platform`, `adms`, `hooks`, `api`), reserved slugs (D4 4.7), product name, support email |
 | `database.php` | MySQL 8.4, `utf8mb4`, `utf8mb4_0900_ai_ci`, strict mode, `timezone => '+00:00'`; Redis connections `default`, `cache`, `queue`, `locks` |
 | `filesystems.php` | Disks `private` (default), `tmp`, `archive` (partition archives), `public` (built assets only), optional `s3` |
 | `fortify.php` | Features: login, password reset, two-factor with confirmation, password confirmation; views off (custom Blade views) |
@@ -658,24 +658,24 @@ Route::portalResource('cashier-sessions', App\CashierSessionController::class)
 ### `.env.example` (application keys)
 
 ```
-APP_NAME=Darsgah
+APP_NAME=Darsora
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
-APP_URL=http://demo.darsgah.test
+APP_URL=http://demo.darsora.test
 
-DARSGAH_ROOT_DOMAIN=darsgah.test
-DARSGAH_PLATFORM_HOST=platform.darsgah.test
-DARSGAH_ADMS_HOST=adms.darsgah.test
-DARSGAH_HOOKS_HOST=hooks.darsgah.test
-DARSGAH_API_HOST=api.darsgah.test
+DARSORA_ROOT_DOMAIN=darsora.test
+DARSORA_PLATFORM_HOST=platform.darsora.test
+DARSORA_ADMS_HOST=adms.darsora.test
+DARSORA_HOOKS_HOST=hooks.darsora.test
+DARSORA_API_HOST=api.darsora.test
 LOOKUP_HASH_PEPPER=
 
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
-DB_DATABASE=darsgah
-DB_USERNAME=darsgah
+DB_DATABASE=darsora
+DB_USERNAME=darsora
 DB_PASSWORD=
 
 REDIS_HOST=redis
@@ -699,7 +699,7 @@ CLAMAV_HOST=clamav
 MAIL_MAILER=smtp
 MAIL_HOST=mailpit
 MAIL_PORT=1025
-MAIL_FROM_ADDRESS=no-reply@darsgah.test
+MAIL_FROM_ADDRESS=no-reply@darsora.test
 
 SENTRY_LARAVEL_DSN=
 TELESCOPE_ENABLED=false
@@ -1130,7 +1130,7 @@ PHP features newer than 8.2 are caught three ways: the CI job on PHP 8.2 fails t
 | Release | Surface | Consumers |
 |---|---|---|
 | R1 | Internal JSON endpoints under portal prefixes; webhooks; ADMS | The application's own Alpine grids; devices; gateways |
-| R2 | API v1 on `api.darsgah.app/api/v1` | Future mobile apps for guardians, students and teachers; the on-premise attendance sync agent |
+| R2 | API v1 on `api.darsora.app/api/v1` | Future mobile apps for guardians, students and teachers; the on-premise attendance sync agent |
 | R3 | Partner read scopes on API v1 | Approved third parties, per organization |
 
 ### Layering
@@ -1138,7 +1138,7 @@ PHP features newer than 8.2 are caught three ways: the CI job on PHP 8.2 fails t
 The API uses the same Actions, Queries and Policies as the web. Only the edges differ:
 
 ```
-api.darsgah.app/api/v1/fee/vouchers/{voucher}
+api.darsora.app/api/v1/fee/vouchers/{voucher}
   -> api.v1 middleware group (token -> user -> organization, branch header, locale, rate limit)
   -> ability:portal:guardian,portal:app   (route group in modules/Fee/routes/api.php)
   -> Api\V1\VoucherController@show
@@ -1214,7 +1214,7 @@ Success, single record:
     "net_amount": { "amount": "8500.00", "currency": "PKR" },
     "paid_amount": { "amount": "5000.00", "currency": "PKR" },
     "outstanding_amount": { "amount": "3500.00", "currency": "PKR" },
-    "links": { "pdf": "https://api.darsgah.app/api/v1/fee/vouchers/01JD8Z3K6Q2M7V4T9X1B5C8N0R/pdf?signature=..." },
+    "links": { "pdf": "https://api.darsora.app/api/v1/fee/vouchers/01JD8Z3K6Q2M7V4T9X1B5C8N0R/pdf?signature=..." },
     "updated_at": "2026-11-05T06:12:44Z"
   },
   "meta": { "correlation_id": "01JDA0B1C2D3E4F5G6H7J8K9M0" }
@@ -1410,7 +1410,7 @@ Covered in D3 3.15 and D4 4.7. Folder placement: `Http/Controllers/Webhooks` and
 | A-70 | Native mobile apps stay out of scope (D1 non-goals); API v1 is built in R2 so they can be added later without backend changes. |
 | A-71 | Local development uses the Docker Compose file in `deploy/docker`; Laravel Sail is not used. |
 | A-72 | The OpenAPI specification uses version 3.1 and is written by hand. |
-| A-73 | Product name and root domain (`Darsgah`, `darsgah.app`) remain placeholders and are read only from `config/darsgah.php`, so renaming touches one file and the environment. |
+| A-73 | Product name and root domain (`Darsora`, `darsora.app`) remain placeholders and are read only from `config/darsora.php`, so renaming touches one file and the environment. |
 
 ## Gaps Found and Added
 

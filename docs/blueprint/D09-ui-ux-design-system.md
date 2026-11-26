@@ -207,22 +207,22 @@ Labels come from each enum's `label()` (D3 3.6), so wording can be changed by tr
 
 | Token | Stack | Use |
 |---|---|---|
-| `--font-sans` | `"Darsgah Urdu", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif` | All UI text. Latin falls through to the system font; Urdu characters use the Urdu face (unicode-range). |
+| `--font-sans` | `"Darsora Urdu", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif` | All UI text. Latin falls through to the system font; Urdu characters use the Urdu face (unicode-range). |
 | `--font-numeric` | `system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif` | Isolated numbers inside Urdu text (DEC-143) |
 | `--font-mono` | `ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` | API keys, device serials, technical IDs only |
 
-`"Darsgah Urdu"` is an alias defined twice, and the layout picks one by the user's preference (`data-urdu-font` on `<html>`):
+`"Darsora Urdu"` is an alias defined twice, and the layout picks one by the user's preference (`data-urdu-font` on `<html>`):
 
 ```css
 @font-face {
-  font-family: "Darsgah Urdu Nastaliq";
+  font-family: "Darsora Urdu Nastaliq";
   src: url("/build/fonts/NotoNastaliqUrdu-Regular.woff2") format("woff2");
   font-weight: 400 700;
   font-display: swap;
   unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
 }
 @font-face {
-  font-family: "Darsgah Urdu Naskh";
+  font-family: "Darsora Urdu Naskh";
   src: url("/build/fonts/NotoNaskhArabic-Regular.woff2") format("woff2");
   font-weight: 400 700;
   font-display: swap;
@@ -230,7 +230,7 @@ Labels come from each enum's `label()` (D3 3.6), so wording can be changed by tr
 }
 ```
 
-The `--font-sans` value starts with `var(--font-urdu-face)`, which is `"Darsgah Urdu Nastaliq"` by default and `"Darsgah Urdu Naskh"` when `data-urdu-font="naskh"`.
+The `--font-sans` value starts with `var(--font-urdu-face)`, which is `"Darsora Urdu Nastaliq"` by default and `"Darsora Urdu Naskh"` when `data-urdu-font="naskh"`.
 
 ### Type scale (Latin)
 
@@ -534,7 +534,7 @@ Testing: axe checks run in the browser test suite after UG-1 (D8 8.14) on every 
   --color-platform-bar: #16191C;
 
   /* Typography */
-  --font-urdu-face: "Darsgah Urdu Nastaliq";
+  --font-urdu-face: "Darsora Urdu Nastaliq";
   --font-sans: var(--font-urdu-face), system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
   --font-numeric: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -563,7 +563,7 @@ Testing: axe checks run in the browser test suite after UG-1 (D8 8.14) on every 
 }
 
 /* Urdu face preference */
-[data-urdu-font="naskh"] { --font-urdu-face: "Darsgah Urdu Naskh"; }
+[data-urdu-font="naskh"] { --font-urdu-face: "Darsora Urdu Naskh"; }
 
 /* Urdu text sizing (9.6) */
 :lang(ur) { font-size: 1.125em; line-height: 2; letter-spacing: normal; }
@@ -955,7 +955,7 @@ A tile is a link when it has a drill-down. Deltas always have an arrow icon and 
 
 ```
 +--------------------------------------------------------------------------------------+
-| (PLATFORM)  Darsgah Platform        [Search organizations...]         [SA Admin v]    |  platform-bar #16191C, badge warning-tint
+| (PLATFORM)  Darsora Platform        [Search organizations...]         [SA Admin v]    |  platform-bar #16191C, badge warning-tint
 +--------------+-----------------------------------------------------------------------+
 | Organizations|  Organizations                                         [+ Provision]  |
 | Plans        |  ...                                                                  |
@@ -990,7 +990,7 @@ A tile is a link when it has a drill-down. Deltas always have an arrow icon and 
 |  | [ Sign in                              ] |  |   primary, full width
 |  | Forgot password?   First time? Get code  |  |
 |  +------------------------------------------+  |
-|      Powered by Darsgah  .  Help  .  Privacy   |
+|      Powered by Darsora  .  Help  .  Privacy   |
 +------------------------------------------------+
 ```
 

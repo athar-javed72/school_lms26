@@ -85,7 +85,7 @@ Every tenant parent table has uq_{alias}_org_id (organization_id, id). All FKs O
 
 BUSINESS RULES
 - A branch belongs to one institution for its lifetime (A-34).
-- Reserved slugs from config/darsgah.php can never resolve to a tenant.
+- Reserved slugs from config/darsora.php can never resolve to a tenant.
 - Archived organizations resolve to 404; suspended ones resolve read-only.
 - Writes to branch-owned models in all-branches mode are rejected with core.select_branch_first.
 
@@ -99,7 +99,7 @@ SECURITY AND PERMISSIONS
 
 TESTS
 - Unit: TenantContext requireOrganization throws without context; Tenancy::bypass restores state after exceptions.
-- Feature: ResolveTenant resolves {slug}.darsgah.test to the organization; unknown host 404; reserved slug 404; archived 404; suspended sets read-only; old slug within redirect_until returns 301 to the primary domain.
+- Feature: ResolveTenant resolves {slug}.darsora.test to the organization; unknown host 404; reserved slug 404; archived 404; suspended sets read-only; old slug within redirect_until returns 301 to the primary domain.
 - Feature: TenantAware job dispatched in A processes only A rows; job without context fails with MissingTenantContext.
 - Feature: BelongsToBranch create without active branch throws core.select_branch_first; with a branch outside allowedBranchIds throws; branch_id change after create throws.
 - Feature: TenantExists rejects B's ULID inside A; BranchExists rejects a branch outside allowed branches.
@@ -440,7 +440,7 @@ TESTS
 - RBAC fixture updated and green; isolation suite green; ScreenCoverageTest green.
 
 ACCEPTANCE CRITERIA
-1. MS-04 on staging: a platform admin provisions an organization; the owner receives the invitation (email or log), activates with OTP, signs in on {slug}.staging.darsgah.app, and lands in the onboarding wizard. Screenshots of each step in the report.
+1. MS-04 on staging: a platform admin provisions an organization; the owner receives the invitation (email or log), activates with OTP, signs in on {slug}.staging.darsora.app, and lands in the onboarding wizard. Screenshots of each step in the report.
 2. Support access with impersonation works end to end with the banner and limits.
 3. Entitlement 404 behaviour proven for a disabled standard-tier module route (use a test route registered in the test suite).
 4. All screens listed exist with D10 route names and permissions.
